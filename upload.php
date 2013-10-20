@@ -89,7 +89,7 @@ function GetFileNameByPath($path) {
 
 function CalcDefaultThumbSize($imagepath, $twidth = 100, $theight = 100) {
 	
-	list($swidth, $h) = getimagesize($imagepath);
+	list($swidth, $sheight) = getimagesize($imagepath);
 	
 	$wscale = $swidth / $twidth;
 	$hscale = $sheight / $theight;
@@ -104,7 +104,19 @@ function CalcDefaultThumbSize($imagepath, $twidth = 100, $theight = 100) {
 	$y1 = ($sheight - $minh) / 2;
 	
 	return array('x1' => $x1, 'y1' => $y1, 
-	    'swidth' => $swidth, 'sheight' => $sheight);
+	    'swidth' => $minw, 'sheight' => $minh);
+}
+
+function ReduceSize(&$imagepath, &$x1, &$y1, &$swidth, &$sheight) {
+    list($width, $height) = getimagesize($imagepath);
+    
+    $maxsize = max($width, $height);
+    $reducescale = $maxsize / 300;
+    
+    $x1 = $x1 * $reducescale;
+    $y1 = $y1 * $reducescale;
+    $swidth = $swidth * $reducescale;
+    $sheight = $sheight * $reducescale;
 }
 
 function Generatethumb($imagepath, 
@@ -113,7 +125,8 @@ function Generatethumb($imagepath,
 	global $error_log;
 	
     // Varify input args is OK
-    if ($x1 < 0 || $y1 < 0
+    if (empty($imagepath) 
+        || $x1 < 0 || $y1 < 0
         || $swidth <= 0 || $sheight <= 0
         || $twidth <= 0 || $theight <= 0) {
 		$error_log = 'Invoke Generatethumb args is invalid!';
@@ -133,13 +146,15 @@ function Generatethumb($imagepath,
 		$error_log = 'Thumb dir is invalid!';
 		return false;
 	}
+	// Reduce size
+	ReduceSize($imagepath, $x1, $y1, $swidth, $sheight);
 	
 	// create source image handler and thumb handler
 	$thumb = imagecreatetruecolor($twidth, $theight);
 	$white = imagecolorallocate($thumb, 255, 255, 255);
 	imagefill($thumb, 0, 0, $white);
 	$func_create = 'imagecreatefrom' . $filetype;
-	$source = $func_create($filetmp);
+	$source = $func_create($imagepath);
 	// Resize to thumb
 	imagecopyresampled($thumb, $source, 
 	    0, 0, $x1, $y1, $twidth, $theight, $swidth, $sheight);
@@ -152,7 +167,7 @@ function Generatethumb($imagepath,
 	imagedestroy($thumb);
 	imagedestroy($source);
 	
-	return $thumbpath;
+	return './thumb/' . $filename;
 }
 
 ?>

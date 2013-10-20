@@ -1,5 +1,6 @@
 <?php
-require_once('./upload.php');
+
+require_once('upload.php');
 
 $error_log = null;
 $imagefile = isset($_FILES['imagefile']) ? $_FILES['imagefile'] : null;
@@ -10,6 +11,28 @@ if (!empty($error_log)) {
 ?>
 
 <script type="text/javascript">
+
+
+function CalcDefaultThumbSize(swidth, sheight, twidth, theight) {
+	var wscale = swidth / twidth;
+	var hscale = sheight / theight;
+	var minw = 0.0;
+	var minh = 0.0;
+	
+	if (wscale > hscale) {
+		minh = sheight;
+		minw = twidth * hscale;
+	} else {
+		minh = theight * wscale;
+		minw = swidth;
+	}
+	var x1 = (swidth - minw) / 2;
+	var y1 = (sheight - minh) / 2;
+	
+	return {'x1': x1, 'y1': y1, 'swidth': minw, 'sheight': minh };
+}
+
+
     function preview(img, selection) {
         if (!selection.width || !selection.height)
             return;
@@ -30,11 +53,23 @@ if (!empty($error_log)) {
         $('#si_height').val(selection.height);
     }
 
-    $(function () {
-        $('#photo').imgAreaSelect({ aspectRatio: '1:1', handles: true,
-            fadeSpeed: 200, onSelectChange: preview });
+    $(window).load(function() {
+        console.log("photo width = " + $('#photo').width());
+        console.log("photo height = " + $('#photo').height());
         // Calculate a default selector
+        var pwidth = $('#photo').width();
+        var pheight = $('#photo').height();
+        var sizearr = CalcDefaultThumbSize(pwidth, pheight, 100, 100);
+        console.log("x1 = " + sizearr.x1 + ", y1 = " + sizearr.y1 + "\n");
+        console.log("swidth = " + sizearr.swidth + ", sheight = " + sizearr.sheight + "\n");
         
+        $('#photo').imgAreaSelect({ aspectRatio: '1:1', handles: true,
+            fadeSpeed: 200, onSelectChange: preview,
+            x1: sizearr.x1, y1: sizearr.y1, x2: (sizearr.x1+sizearr.swidth), y2: (sizearr.y1+sizearr.sheight) });
+        
+        var selection = {x1: sizearr.x1, y1: sizearr.y1, width: sizearr.swidth, height: sizearr.sheight };
+        var img = {width: pwidth, height: pheight};
+        preview(img, selection);
     });
 </script>
 
@@ -52,7 +87,7 @@ if (!empty($error_log)) {
       <img src="<?php echo $imagepath; ?>" style="width: 100px; height: 100px; margin-left: 0px; margin-top: 0px;">
     </div>
     
-    <form action="./favatar.php" method="POST">
+    <form action="./index.php?favatar=1&XDEBUG_SESSION_START=1" method="POST">
     <div class="div_avatar_container" style="width: 200px; margin: 5px 0px 0px 10px;">
         <input type="hidden" id="imagepath" name="imagepath" value="<?php echo $imagepath; ?>"/>
         <label for="si_x1">X1:</label><input type="text" id="si_x1" name="si_x1" />,&nbsp;
