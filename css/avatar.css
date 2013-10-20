@@ -1,0 +1,26 @@
+.div_avatar_container {
+    float: left;
+    margin: 10px;
+    font-size: 110%;
+    font-weight: bold;
+    vertical-align: top;
+    text-align: left;
+}
+.div_avatar_container label {
+    font-size: 12px;
+    font-weight: normal;
+    margin: 0px 0px 2px 0px;
+    text-align: right;
+    width: 20px;
+    vertical-align: middle;
+}
+.div_avatar_container input {
+    display: inline-block;
+    margin-top: 5px;
+    margin-left: 5px;
+    font-size: 12px;
+    font-weight: normal;
+    width: 50px;
+    vertical-align: middle;
+}
+
