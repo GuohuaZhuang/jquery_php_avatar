@@ -3,8 +3,14 @@
 require_once('upload.php');
 
 $error_log = null;
-$imagefile = isset($_FILES['imagefile']) ? $_FILES['imagefile'] : null;
-$imagepath = Upload($imagefile);
+
+if (isset($_FILES['imagefile'])) {
+    $imagefile = $_FILES['imagefile'];
+    $imagepath = Upload($imagefile);
+} else {
+    $error_log = 'Image file post null';
+}
+
 if (!empty($error_log)) {
     echo $error_log;
 } else {
@@ -33,7 +39,7 @@ if (!empty($error_log)) {
         <label for="si_y1">Y1:</label><input type="text" id="si_y1" name="si_y1" /><br/>
         <label for="si_width">W&nbsp;:</label><input type="text" id="si_width" name="si_width" />,&nbsp;
         <label for="si_height">H<sub>&nbsp;&nbsp;</sub>:</label><input type="text" id="si_height" name="si_height" /><br/>
-        <input type="submit" style="width: auto; margin-left: 0;" value="Save thumbnail avatar"/><br/>
+        <input type="submit" name="si_submit" style="width: auto; margin-left: 0;" value="Save thumbnail avatar"/><br/>
     </div>
     </form>
     

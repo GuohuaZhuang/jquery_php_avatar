@@ -6,8 +6,6 @@
     <link rel="stylesheet" type="text/css" href="css/avatar.css" />
     <script type="text/javascript" src="scripts/jquery.min.js"></script>
     <script type="text/javascript" src="scripts/jquery.imgareaselect.pack.js"></script>
-	<script type="text/javascript">
-	</script>
 </head>
 
 <body>
@@ -18,10 +16,8 @@
     
     if (isset($_GET['fselector']) && !empty($_GET['fselector'])) {
         include(APPLICATION_PATH . '/fselector.php');
-    } else if (isset($_GET['favatar']) && !empty($_GET['favatar'])) {
-        include(APPLICATION_PATH . '/favatar.php');
     } else {
-        include(APPLICATION_PATH . '/fnoavatar.php');
+        include(APPLICATION_PATH . '/favatar.php');
     }
 ?>
 

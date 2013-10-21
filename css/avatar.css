@@ -125,16 +125,11 @@
     background: url("../images/ajax_post_forms_sprite.png") no-repeat -760px 0;
     opacity: .31;
 }
-#dropzone_container:hover .reset_btn b {
-    display:block;
-}
 #dropzone_container:hover .help_text .default_text {
     color: #333333;
-    display:block;
 }
 #dropzone_container:hover .help_text .default_text .photo_icon {
     opacity: 0.8;
-    display:block;
 }
 #dropzone_container input#imagefile {
     cursor: pointer;
