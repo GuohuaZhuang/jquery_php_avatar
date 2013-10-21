@@ -10,19 +10,32 @@ $swidth = isset($_POST['si_width']) ? $_POST['si_width'] : 0;
 $sheight = isset($_POST['si_height']) ? $_POST['si_height'] : 0;
 $imagepath = isset($_POST['imagepath']) ? $_POST['imagepath'] : null;
 
-/*
-echo '$x1 = ' . $x1 . "<br/>\n";
-echo '$y1 = ' . $y1 . "<br/>\n";
-echo '$swidth = ' . $swidth . "<br/>\n";
-echo '$sheight = ' . $sheight . "<br/>\n";
-*/
-
 $thumbpath = Generatethumb($imagepath, $x1, $y1, $swidth, $sheight, 100, 100);
 
 if (!empty($error_log)) {
     echo $error_log;
 } else {
 ?>
+
+<script type="text/javascript">
+/*
+  I want to thanks for the tip from http://jsfiddle.net/gKVKm/36/
+  The input tag with type="file" width is incompatible in chrome and firefox, 
+  which make me totally freak out in a minute!
+*/
+$(window).load(function() {
+    $("#dropzone_container").mousemove(function(e) {
+        var offL, offR, inpStart;
+        offL = $(this).offset().left;
+        offT = $(this).offset().top;
+        aaa= $(this).find("input").width();
+        $(this).find("input").css({
+            left:e.pageX-20,
+            top:e.pageY-20
+        })
+    });
+});
+</script>
 
 <input type="hidden" id="thumbpath" name="thumbpath" value="<?php echo $thumbpath; ?>"/>
 
@@ -37,13 +50,10 @@ if (!empty($error_log)) {
         <div class="change_btn" title="Reset">
             <img id="photo" style="max-height: 100px; max-width: 100px;" src="<?php echo $thumbpath; ?>">
         </div>
-        <div class="help_text">
-            <div class="default_text">
-                <div class="photo_icon"></div>
-                <span>Choose a photo</span>
-            </div>
+        <div>
+        <input type="file" id="imagefile" name="imagefile" accept="image/*" size="1"
+            onchange="javascript:this.form.submit();" title="Click on it to upload an avatar">
         </div>
-        <input type="file" id="imagefile" name="imagefile" accept="image/*" onchange="javascript:this.form.submit();">
     </div>
 </form>
 

@@ -38,6 +38,7 @@
     overflow: hidden;
     position: relative;
     width: 100px;
+    cursor:pointer;
 }
 *, *:active, *:focus {
     outline: 0;
@@ -79,6 +80,7 @@
     display: none;
 }
 #dropzone_container:hover b {
+    font-size: 13px;
     display: block;
     border: 0px;
     position: absolute;
@@ -111,7 +113,7 @@
 #dropzone_container .help_text .default_text {
     color: #c4c4c4;
     display: table-cell;
-    font-size: 14px;
+    font-size: 13px;
     text-align: center;
     vertical-align: middle;
 }
@@ -122,6 +124,17 @@
     margin: 0 auto 10px;
     background: url("../images/ajax_post_forms_sprite.png") no-repeat -760px 0;
     opacity: .31;
+}
+#dropzone_container:hover .reset_btn b {
+    display:block;
+}
+#dropzone_container:hover .help_text .default_text {
+    color: #333333;
+    display:block;
+}
+#dropzone_container:hover .help_text .default_text .photo_icon {
+    opacity: 0.8;
+    display:block;
 }
 #dropzone_container input#imagefile {
     cursor: pointer;

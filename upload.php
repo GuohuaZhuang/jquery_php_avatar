@@ -111,6 +111,7 @@ function ReduceSize(&$imagepath, &$x1, &$y1, &$swidth, &$sheight) {
     list($width, $height) = getimagesize($imagepath);
     
     $maxsize = max($width, $height);
+    if ($maxsize < 300) return;
     $reducescale = $maxsize / 300;
     
     $x1 = $x1 * $reducescale;
